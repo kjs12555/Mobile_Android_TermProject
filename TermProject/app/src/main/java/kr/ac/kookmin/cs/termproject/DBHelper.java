@@ -19,15 +19,19 @@ class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String a = "Create Table Logger(X double, Y double, Division text, LogContext text);";
+        String a = "Create Table Event(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name Text, Type Integer);";
+        String b = "Create Table Goal(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name Text, Type Integer)";
         db.execSQL(a);
+        db.execSQL(b);
         Toast.makeText(context, "DB 생성 완료", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String a = "Create Table Logger(X double, Y double, Division text, LogContext text);";
+        String a = "Create Table Event(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name Text, Type Integer);";
+        String b = "Create Table Goal(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name Text, Type Integer)";
         db.execSQL(a);
-        Toast.makeText(context, "DB 업데이트 완료", Toast.LENGTH_SHORT).show();
+        db.execSQL(b);
+        Toast.makeText(context, "DB 생성 완료", Toast.LENGTH_SHORT).show();
     }
 }
