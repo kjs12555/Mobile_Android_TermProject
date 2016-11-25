@@ -1,5 +1,6 @@
 package kr.ac.kookmin.cs.termproject;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FragmentTask extends Fragment {
     ArrayList<EventData> datas;
@@ -33,7 +36,7 @@ public class FragmentTask extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        helper = new DBHelper(v.getContext(), "TremProject.db" ,null, 1);
+        helper = new DBHelper(v.getContext(), "TermProject.db" ,null, 1);
         db = helper.getWritableDatabase();
         getDatasToDB();
 
@@ -46,13 +49,8 @@ public class FragmentTask extends Fragment {
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sql = "Insert Into Event(Name, Type) values('test', 0);";
-                db.execSQL(sql);
-                Cursor rs = db.rawQuery("select * from Event order by id",null);
-                rs.moveToLast();
-                EventData tmp = new EventData(rs.getInt(0), rs.getString(1), rs.getInt(2));
-                mEventDataAdapter.dataArrayList.add(tmp);
-                mEventDataAdapter.notifyDataSetChanged();
+                Intent intent = new Intent(v.getContext(), AddEvent.class);
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -62,6 +60,22 @@ public class FragmentTask extends Fragment {
         Cursor rs = db.rawQuery("select * from Event;", null);
         while(rs.moveToNext()){
             datas.add(new EventData(rs.getInt(0), rs.getString(1), rs.getInt(2)));
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode==1){
+                String sql = "Insert Into Event(Name, Type) values(?, 0);";
+                db.execSQL(sql,new Object[]{data.getStringExtra("eventName")});
+                Cursor rs = db.rawQuery("select * from Event order by id",null);
+                rs.moveToLast();
+                EventData tmp = new EventData(rs.getInt(0), rs.getString(1), rs.getInt(2));
+                mEventDataAdapter.dataArrayList.add(tmp);
+                mEventDataAdapter.notifyDataSetChanged();
+            }
         }
     }
 }

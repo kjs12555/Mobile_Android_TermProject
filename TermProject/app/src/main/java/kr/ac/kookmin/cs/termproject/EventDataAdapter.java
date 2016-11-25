@@ -65,15 +65,29 @@ public class EventDataAdapter extends BaseAdapter {
                     buttonStart.setText("End");
                     buttonEdit.setVisibility(View.VISIBLE);
                     buttonDelete.setVisibility(View.INVISIBLE);
+                    for (int i = 0; i < dataArrayList.size(); i++) {
+                        if (dataArrayList.get(i).getId() == Integer.parseInt(id.getText().toString())) {
+                            dataArrayList.get(i).setType(1);
+                            break;
+                        }
+                    }
                     String sql = "update Event set Type=1 where id=?;";
                     db.execSQL(sql, new Object[]{Integer.parseInt(id.getText().toString())});
+                    adapter.notifyDataSetChanged();
                 }else if(buttonStart.getText().toString().equals("End")){
                     startFlag = false;
                     buttonStart.setText("Start");
                     buttonEdit.setVisibility(View.INVISIBLE);
                     buttonDelete.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < dataArrayList.size(); i++) {
+                        if (dataArrayList.get(i).getId() == Integer.parseInt(id.getText().toString())) {
+                            dataArrayList.get(i).setType(0);
+                            break;
+                        }
+                    }
                     String sql = "update Event set Type=0 where id=?;";
                     db.execSQL(sql, new Object[]{Integer.parseInt(id.getText().toString())});
+                    adapter.notifyDataSetChanged();
                 }
             }
         });

@@ -13,9 +13,11 @@ public class EventData {
 
     public int getId() { return this.id; }
 
-    public String getName(){
-        return this.name;
-    }
+    public String getName(){ return this.name; }
 
     public int getType() { return this.type; }
+
+    public void setName(String name) { this.name = name; }
+
+    public void setType(int type) { this.type = type; }
 }
