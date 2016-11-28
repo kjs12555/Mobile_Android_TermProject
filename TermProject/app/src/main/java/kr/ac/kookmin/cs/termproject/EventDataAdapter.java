@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class EventDataAdapter extends BaseAdapter {
     public long getItemId(int position){
         return position;
     }
+
+    public SQLiteDatabase getDb(){ return db; }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
