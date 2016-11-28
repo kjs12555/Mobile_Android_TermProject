@@ -34,7 +34,7 @@ public class LogService extends Service {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         helper = new DBHelper(this, "TermProject.db" ,null, 1);
         db = helper.getWritableDatabase();
-        gps = new GPSListener(db);
+        gps = new GPSListener(db, intent.getStringExtra("eventName"));
 
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*10, 0, gps);

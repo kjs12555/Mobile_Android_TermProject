@@ -91,6 +91,7 @@ public class EventDataAdapter extends BaseAdapter {
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
                     adapter.notifyDataSetChanged();
                     Intent intent = new Intent(mActivity, LogService.class);
+                    intent.putExtra("eventName", textName.getText().toString());
                     mActivity.startService(intent);
                 }else if(buttonStart.getText().toString().equals("End")){
                     startFlag = false;
