@@ -3,21 +3,16 @@ package kr.ac.kookmin.cs.termproject;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -61,12 +56,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
         dataBig.add("Event");
         dataBig.add("Log");
         adapterBig = new ArrayAdapter<String>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, dataBig);
-        spinnerBig = (Spinner) v.findViewById(R.id.spinner3);
+        spinnerBig = (Spinner) v.findViewById(R.id.map_big);
         spinnerBig.setAdapter(adapterBig);
         spinnerBig.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                spinnerSmall = (Spinner)v.findViewById(R.id.spinner4);
+                spinnerSmall = (Spinner)v.findViewById(R.id.map_small);
                 dataSmall = new ArrayList<String>();
                 //position에 따라 전체 Log이름으로 초기화하거나 Event의 이름으로 초기화 하거나 Log별로 초기화 합니다. DB를 작성하면 마저 작성할 예정
                 switch (position){

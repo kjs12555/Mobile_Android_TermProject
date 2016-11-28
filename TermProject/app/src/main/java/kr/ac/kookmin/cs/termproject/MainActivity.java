@@ -1,5 +1,7 @@
 package kr.ac.kookmin.cs.termproject;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -18,10 +21,16 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
+    DBHelper helper;
+    SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        helper = new DBHelper(this, "TermProject.db" ,null, 1);
+        db = helper.getWritableDatabase();
 
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -52,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         mActionBar.addTab(listTab);
         mActionBar.addTab(goalTab);
         //탭 구현 종료
-
     }
 
     @Override
@@ -81,4 +89,30 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int tabPosition = intent.getIntExtra("tabPosition",-1);
+        if(tabPosition==0){
+            FragmentTask task = (FragmentTask) mFragment;
+            int resultCode = intent.getIntExtra("resultCode", 0);
+            if(resultCode==1) {    //이벤트 이름 수정
+                int position = intent.getIntExtra("eventPosition", -1);
+                String name = intent.getStringExtra("modifyName");
+                if (position != -1) {
+                    EventData data = task.mEventDataAdapter.dataArrayList.get(position);
+                    data.setName(name);
+                    task.mEventDataAdapter.notifyDataSetChanged();
+                    int id = data.getId();
+                    String sql = "update Event set Name=? where id=?;";
+                    db.execSQL(sql, new Object[]{name, id});
+                } else {
+                    Toast.makeText(this, "position을 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else if(tabPosition==3){   //Goal탭 관련으로 호출된 경우
+            FragmentGoal goal = (FragmentGoal) mFragment;
+        }
+    }
 }

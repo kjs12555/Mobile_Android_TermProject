@@ -11,7 +11,7 @@
         android:text="Del"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:id="@+id/goal_del"
+        android:id="@+id/add_goal_del"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true" />
@@ -21,34 +21,24 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/goal_position"
+        android:id="@+id/add_goal_position"
         android:text="position"
         android:visibility="invisible" />
 
     <TextView
-        android:text="Name"
         android:layout_height="match_parent"
-        android:id="@+id/goal_name"
+        android:id="@+id/add_goal_text"
+        android:layout_width="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="16sp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        android:text="Text"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_width="140dp"
-        android:layout_alignParentBottom="true" />
-
-    <TextView
-        android:text="기간"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/goal_position"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="YYYYMMDD ~ YYYYMMDD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/start_end_text" />
+        android:layout_toStartOf="@+id/add_goal_del" />
 
 </RelativeLayout>

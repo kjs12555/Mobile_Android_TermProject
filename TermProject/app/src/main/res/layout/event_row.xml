@@ -4,7 +4,8 @@
     android:layout_height="70dp"
     android:orientation="vertical"
     android:padding="3dp"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/event_layout">
 
     <Button
         android:text="Del"
@@ -47,12 +48,12 @@
         android:layout_alignParentBottom="true" />
 
     <TextView
-        android:text="id"
+        android:text="position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/event_id"
+        android:id="@+id/event_position"
         android:visibility="invisible" />
 
 </RelativeLayout>

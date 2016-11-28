@@ -29,6 +29,16 @@ public class FragmentTask extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         v = inflater.inflate(R.layout.fragment_task, container, false);
+
+        addEvent = (Button)v.findViewById(R.id.add_event);
+        addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AddEvent.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         return v;
     }
 
@@ -42,22 +52,13 @@ public class FragmentTask extends Fragment {
 
         mListView = (ListView)getActivity().findViewById(R.id.event_view);
         save = getLayoutInflater(savedInstanceState);
-        mEventDataAdapter = new EventDataAdapter(save, datas, helper, db);
+        mEventDataAdapter = new EventDataAdapter(save, datas, helper, db, getActivity());
         mListView.setAdapter(mEventDataAdapter);
-
-        addEvent = (Button)v.findViewById(R.id.add_event);
-        addEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), AddEvent.class);
-                startActivityForResult(intent, 1);
-            }
-        });
     }
 
     public void getDatasToDB(){
         datas = new ArrayList<EventData>();
-        Cursor rs = db.rawQuery("select * from Event;", null);
+        Cursor rs = db.rawQuery("select * from Event order by id;", null);
         while(rs.moveToNext()){
             datas.add(new EventData(rs.getInt(0), rs.getString(1), rs.getInt(2)));
         }
@@ -68,11 +69,12 @@ public class FragmentTask extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode==1){
+                String name = data.getStringExtra("eventName");
                 String sql = "Insert Into Event(Name, Type) values(?, 0);";
-                db.execSQL(sql,new Object[]{data.getStringExtra("eventName")});
-                Cursor rs = db.rawQuery("select * from Event order by id",null);
-                rs.moveToLast();
-                EventData tmp = new EventData(rs.getInt(0), rs.getString(1), rs.getInt(2));
+                db.execSQL(sql,new Object[]{name});
+                Cursor rs = db.rawQuery("select Max(ID) from Event",null);
+                rs.moveToNext();
+                EventData tmp = new EventData(rs.getInt(0), name, 0);
                 mEventDataAdapter.dataArrayList.add(tmp);
                 mEventDataAdapter.notifyDataSetChanged();
             }

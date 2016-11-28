@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/add_goal_editText"
+        android:layout_height="36dp"
+        android:layout_weight="0.11"
+        android:hint="목표 이름" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.09">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/end_text"
+            android:text="클릭"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:text="시작 날짜 : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="클릭"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/start_text"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/textView9" />
+
+        <TextView
+            android:text="종료 날짜 : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/end_text"
+            android:layout_alignBottom="@+id/end_text"
+            android:layout_toStartOf="@+id/end_text" />
+
+        <TextView
+            android:text="~"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/start_text" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/add_goal_list"
+        android:layout_above="@+id/add_goal_add"
+        android:layout_alignParentStart="true"
+        android:layout_height="200dp"
+        android:layout_weight="0.75" />
+
+    <Button
+        android:text="목표 추가"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_goal_complete"
+        android:id="@+id/add_goal_add"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_goal_complete"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:text="완료" />
+</LinearLayout>

@@ -7,7 +7,7 @@
     <Spinner
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/list_big"
         android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -16,26 +16,24 @@
     <Spinner
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2"
+        android:id="@+id/list_small"
         android:layout_marginTop="25dp"
-        android:layout_below="@+id/spinner"
-        android:layout_alignStart="@+id/spinner" />
+        android:layout_below="@+id/list_big"
+        android:layout_alignStart="@+id/list_big" />
 
     <TextView
         android:text="대분류 : "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/spinner"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView" />
+        android:layout_alignBottom="@+id/list_big"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:text="소분류 : "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/spinner2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView2" />
+        android:layout_alignBottom="@+id/list_small"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Text"

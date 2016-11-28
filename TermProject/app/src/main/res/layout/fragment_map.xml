@@ -9,35 +9,18 @@
     <Spinner
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner4"
-        android:layout_marginTop="19dp"
-        android:layout_below="@+id/spinner3"
-        android:layout_alignStart="@+id/spinner3" />
+        android:id="@+id/map_big"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView6"
+        android:layout_marginStart="58dp" />
 
     <Spinner
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner3"
-        android:layout_marginStart="54dp"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView3" />
-
-    <TextView
-        android:text="소분류 : "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:layout_alignTop="@+id/spinner4"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="15dp" />
-
-    <TextView
-        android:text="대분류 : "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_above="@+id/spinner4"
-        android:layout_alignStart="@+id/textView4" />
+        android:id="@+id/map_small"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/map_big"
+        android:layout_alignStart="@+id/map_big" />
 
     <fragment
         android:id="@+id/map"
@@ -46,5 +29,20 @@
         tools:context="kr.ac.kookmin.cs.termproject.MainActivity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_height="350dp" />
+        android:layout_height="300dp" />
+
+    <TextView
+        android:text="대분류 : "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/map_small"
+        android:layout_alignStart="@+id/textView5" />
+
+    <TextView
+        android:text="소분류 : "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/map_small"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

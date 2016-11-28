@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddEvent" />
+        <activity android:name=".AddGoal" />
+        <activity android:name=".AddGoalForm" />
+        <activity android:name=".CalendarActivity" />
     </application>
 
 </manifest>

@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,12 +33,12 @@ public class FragmentList extends Fragment {
         dataBig.add("Event");
         dataBig.add("Log");
         adapterBig = new ArrayAdapter<String>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, dataBig);
-        spinnerBig = (Spinner) v.findViewById(R.id.spinner);
+        spinnerBig = (Spinner) v.findViewById(R.id.list_big);
         spinnerBig.setAdapter(adapterBig);
         spinnerBig.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                spinnerSmall = (Spinner)v.findViewById(R.id.spinner2);
+                spinnerSmall = (Spinner)v.findViewById(R.id.list_small);
                 dataSmall = new ArrayList<String>();
                 //position에 따라 전체 Log이름으로 초기화하거나 Event의 이름으로 초기화 하거나 Log별로 초기화 합니다. DB를 작성하면 마저 작성할 예정
                 switch (position){

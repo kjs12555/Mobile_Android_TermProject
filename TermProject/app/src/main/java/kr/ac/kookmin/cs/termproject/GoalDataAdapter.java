@@ -1,5 +1,9 @@
 package kr.ac.kookmin.cs.termproject;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +19,16 @@ public class GoalDataAdapter extends BaseAdapter {
     ArrayList<GoalData> dataArrayList;
     LayoutInflater inflater;
     GoalDataAdapter adapter = this;
+    DBHelper helper;
+    SQLiteDatabase db;
+    Activity mActivity;
 
-    public GoalDataAdapter(LayoutInflater inflater, ArrayList<GoalData> data){
+    public GoalDataAdapter(LayoutInflater inflater, ArrayList<GoalData> data, DBHelper helper, SQLiteDatabase db, Activity ac){
         dataArrayList = data;
         this.inflater = inflater;
+        this.helper = helper;
+        this.db = db;
+        mActivity = ac;
     }
 
     @Override
@@ -42,38 +52,39 @@ public class GoalDataAdapter extends BaseAdapter {
             convertView=inflater.inflate(R.layout.goal_row,null);
         }
 
-        //텍스트뷰  참조
-        final TextView textName = (TextView) convertView.findViewById(R.id.name);
-        final Button buttonDelete = (Button) convertView.findViewById(R.id.del);
-        final RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.goal_layout);
-
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(int i=0; i<dataArrayList.size(); i++){
-                    if(dataArrayList.get(i).getName().equals(textName.getText().toString())){
-                        dataArrayList.remove(i);
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        });
+        final TextView savePosition = (TextView)convertView.findViewById(R.id.goal_position);
+        final TextView textName = (TextView)convertView.findViewById(R.id.goal_name);
+        final TextView startEndText = (TextView)convertView.findViewById(R.id.start_end_text);
+        final Button buttonDelete = (Button)convertView.findViewById(R.id.goal_del);
+        final RelativeLayout layout = (RelativeLayout)convertView.findViewById(R.id.goal_layout);
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i=0; i<dataArrayList.size(); i++){
-                    if(dataArrayList.get(i).getName().equals(textName.getText().toString())){
-                        //클릭을 한 목표와 같은 이름을 가진 Array를 찾는다. 새로운 Activity를 띄워서 목표에 대한 정보를 보여준다.
-                        Toast.makeText(v.getContext(), dataArrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Intent intent = new Intent(mActivity, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.putExtra("tabPosition",3);
+                //mActivity.startActivity(intent);
             }
         });
 
-        // 셀 데이터 가저오기
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = Integer.parseInt(savePosition.getText().toString());
+                int minId = dataArrayList.get(position).getDatas().get(0).getId();
+                int size = dataArrayList.get(position).getDatas().size();
+                String sql = "Delete from Goal where id >= ? and id < ?;";
+                db.execSQL(sql,new Object[]{minId, minId+size});
+                dataArrayList.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         GoalData data = dataArrayList.get(position);
-        textName.setText(data.getName());
+        textName.setText(data.getGoalName());
+        savePosition.setText(Integer.toString(position));
+        startEndText.setText(Integer.toString(data.getStart())+" ~ "+Integer.toString(data.getEnd()));
 
         return convertView;
     }
