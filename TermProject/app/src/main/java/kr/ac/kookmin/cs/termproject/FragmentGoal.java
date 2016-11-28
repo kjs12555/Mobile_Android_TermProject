@@ -18,10 +18,9 @@ import java.util.ArrayList;
 import static android.app.Activity.RESULT_OK;
 
 public class FragmentGoal extends Fragment {
-    ArrayList<GoalData> datas = new ArrayList<GoalData>();
+    ArrayList<GoalData> datas;
     ListView mListView;
     GoalDataAdapter goalDataAdapter;
-    LayoutInflater save;
     DBHelper helper;
     SQLiteDatabase db;
     View v;

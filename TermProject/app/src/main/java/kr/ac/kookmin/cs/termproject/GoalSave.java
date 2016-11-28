@@ -1,10 +1,12 @@
 package kr.ac.kookmin.cs.termproject;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 2016-11-26.
  */
 
-public class GoalSave {
+public class GoalSave implements Serializable{
     private int id;
     private String eventName;
     private int type;

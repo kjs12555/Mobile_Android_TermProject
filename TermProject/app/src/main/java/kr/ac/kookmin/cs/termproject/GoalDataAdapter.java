@@ -22,7 +22,7 @@ public class GoalDataAdapter extends BaseAdapter {
     DBHelper helper;
     SQLiteDatabase db;
     Activity mActivity;
-
+    
     public GoalDataAdapter(LayoutInflater inflater, ArrayList<GoalData> data, DBHelper helper, SQLiteDatabase db, Activity ac){
         dataArrayList = data;
         this.inflater = inflater;
@@ -61,10 +61,12 @@ public class GoalDataAdapter extends BaseAdapter {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mActivity, MainActivity.class);
+                int position = Integer.parseInt(savePosition.getText().toString());
+                Intent intent = new Intent(mActivity, GoalResult.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                intent.putExtra("tabPosition",3);
-                //mActivity.startActivity(intent);
+                intent.putExtra("position", position);
+                intent.putExtra("goalSave", dataArrayList.get(position));
+                mActivity.startActivity(intent);
             }
         });
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:text="목표 결과"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="40sp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:text="목표 이름 : "
+            android:layout_width="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_height="wrap_content"
+            android:textSize="30sp" />
+
+        <TextView
+            android:text="ResultGoalName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/result_goal_name"
+            android:layout_weight="1"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/goal_list"
+        android:layout_height="180dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/result_list"
+        android:layout_height="180dp" />
+
+    <TextView
+        android:text="결과 (총 수, 달성한 목표 수)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:textSize="30sp" />
+</LinearLayout>

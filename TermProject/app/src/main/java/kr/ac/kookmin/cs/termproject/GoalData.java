@@ -2,9 +2,10 @@ package kr.ac.kookmin.cs.termproject;
 
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GoalData {
+public class GoalData implements Serializable {
     private String goalName;
     private ArrayList<GoalSave> datas;
     private int start;

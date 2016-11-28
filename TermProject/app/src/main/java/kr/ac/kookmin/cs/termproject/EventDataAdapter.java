@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,24 +82,22 @@ public class EventDataAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(buttonStart.getText().toString().equals("Start") && !startFlag){
                     startFlag = true;
-                    buttonStart.setText("End");
-                    buttonEdit.setVisibility(View.VISIBLE);
-                    buttonDelete.setVisibility(View.INVISIBLE);
                     int position = Integer.parseInt(savePosition.getText().toString());
                     dataArrayList.get(position).setType(1);
                     String sql = "update Event set Type=1 where id=?;";
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
                     adapter.notifyDataSetChanged();
+                    Intent intent = new Intent(mActivity, LogService.class);
+                    mActivity.startService(intent);
                 }else if(buttonStart.getText().toString().equals("End")){
                     startFlag = false;
-                    buttonStart.setText("Start");
-                    buttonEdit.setVisibility(View.INVISIBLE);
-                    buttonDelete.setVisibility(View.VISIBLE);
                     int position = Integer.parseInt(savePosition.getText().toString());
                     dataArrayList.get(position).setType(0);
                     String sql = "update Event set Type=0 where id=?;";
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
                     adapter.notifyDataSetChanged();
+                    Intent intent = new Intent(mActivity, LogService.class);
+                    mActivity.stopService(intent);
                 }
             }
         });
@@ -125,6 +124,10 @@ public class EventDataAdapter extends BaseAdapter {
             buttonStart.setText("End");
             buttonEdit.setVisibility(View.VISIBLE);
             buttonDelete.setVisibility(View.INVISIBLE);
+        }else{
+            buttonStart.setText("Start");
+            buttonEdit.setVisibility(View.INVISIBLE);
+            buttonDelete.setVisibility(View.VISIBLE);
         }
 
         return convertView;
