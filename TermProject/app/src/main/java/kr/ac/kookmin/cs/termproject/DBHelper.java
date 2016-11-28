@@ -21,7 +21,7 @@ class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("Create Table Event(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name Text, Type Integer);");
         db.execSQL("Create Table Goal(ID INTEGER PRIMARY KEY AUTOINCREMENT, GoalName Text, EventName Text, Type Integer, N Integer, Start Integer, End Integer)");
-        db.execSQL("Create Table Log(ID INTEGER PRIMARY KEY AUTOINCREMENT, Latitude Integer, Longitude Integer, CameraPath Text, LogName Text, EventName Text, Note Text, Time DateTime default (datetime('now','localtime'), Foot text, Type Integer)");
+        db.execSQL("Create Table Log(ID INTEGER PRIMARY KEY AUTOINCREMENT, Latitude Integer, Longitude Integer, CameraPath Text, LogName Text, EventName Text, Note Text, Time DateTime default (datetime('now','localtime')), Foot text, Type Integer)");
         Toast.makeText(context, "DB 생성 완료", Toast.LENGTH_SHORT).show();
     }
 
