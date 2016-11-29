@@ -1,5 +1,7 @@
 package kr.ac.kookmin.cs.termproject;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,9 +29,13 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
     Spinner spinnerBig;
     ArrayAdapter<String> adapterBig;
     //소분류 Spinner
-    ArrayList<String> dataSmall;
+    ArrayList<String> dataSmall = new ArrayList<>();
     Spinner spinnerSmall;
     ArrayAdapter<String> adapterSmall;
+    ArrayList<LogSave> dataArrayList = new ArrayList<>();
+    int bigSpinnerPosition=0;
+    DBHelper helper;
+    SQLiteDatabase db;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,35 +57,40 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         v = inflater.inflate(R.layout.fragment_map, container, false);
         ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
+        helper = new DBHelper(v.getContext(), "TermProject.db",null, 1);
+        db = helper.getWritableDatabase();
         dataBig = new ArrayList<String>();
-        dataBig.add("All");
         dataBig.add("Event");
         dataBig.add("Log");
         adapterBig = new ArrayAdapter<String>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, dataBig);
+
         spinnerBig = (Spinner) v.findViewById(R.id.map_big);
+        spinnerSmall = (Spinner)v.findViewById(R.id.map_small);
+
         spinnerBig.setAdapter(adapterBig);
         spinnerBig.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                spinnerSmall = (Spinner)v.findViewById(R.id.map_small);
-                dataSmall = new ArrayList<String>();
+                dataSmall.clear();
+                Cursor rs;
+                bigSpinnerPosition = position;
                 //position에 따라 전체 Log이름으로 초기화하거나 Event의 이름으로 초기화 하거나 Log별로 초기화 합니다. DB를 작성하면 마저 작성할 예정
                 switch (position){
                     case 0:
-                        dataSmall.add("전체1");
-                        dataSmall.add("전체2");
-                        dataSmall.add("전체3");
+                        //Event이름을 중복없이 add
+                        rs = db.rawQuery("select Distinct(Name) from Event;",null);
+                        while(rs.moveToNext()){
+                            dataSmall.add(rs.getString(0));
+                        }
                         break;
                     case 1:
-                        dataSmall.add("Event1");
-                        dataSmall.add("Event2");
-                        dataSmall.add("Event3");
-                        break;
-                    case 2:
-                        dataSmall.add("Log1");
-                        dataSmall.add("Log2");
-                        dataSmall.add("Log3");
-                        break;
+                        //Log이름을 중복없이 add
+//                        rs = db.rawQuery("select Distinct(LogName) from Log;",null);
+//                        while(rs.moveToNext()){
+//                            String name = rs.getString(0);
+//                            dataSmall.add(name);
+//                        }
+//                        break;
                 }
                 adapterSmall = new ArrayAdapter<String>(view.getContext(), R.layout.support_simple_spinner_dropdown_item, dataSmall);
                 spinnerSmall.setAdapter(adapterSmall);
@@ -87,6 +98,20 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         //DB에서 해당하는 값을 가져와서 Map을 지우고 다시 작성한다. DB작업을 마치고 작성할 예정입니다.
+                        Cursor rs;
+                        String args[] = new String[2];
+                        if(bigSpinnerPosition==0){
+                            args[0] = "EventName";
+                        }else{
+                            args[0] = "LogName";
+                        }
+                        args[1] = spinnerSmall.getSelectedItem().toString();
+                        rs = db.rawQuery("select * from Log where "+args[0]+"='"+args[1]+"' order by ID", null);
+                        dataArrayList.clear();
+                        while(rs.moveToNext()){
+                            dataArrayList.add(new LogSave(rs.getInt(0), rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getInt(9)));
+                        }
+
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {}

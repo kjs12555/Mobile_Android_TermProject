@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -34,7 +35,10 @@ public class LogService extends Service {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         helper = new DBHelper(this, "TermProject.db" ,null, 1);
         db = helper.getWritableDatabase();
-        gps = new GPSListener(db, intent.getStringExtra("eventName"));
+        Cursor rs = db.rawQuery("select * from Save",null);
+        rs.moveToNext();
+        String name = rs.getString(2);
+        gps = new GPSListener(db, name);
 
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*10, 0, gps);

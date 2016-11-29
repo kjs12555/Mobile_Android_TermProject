@@ -3,6 +3,7 @@ package kr.ac.kookmin.cs.termproject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,25 +84,48 @@ public class EventDataAdapter extends BaseAdapter {
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(buttonStart.getText().toString().equals("Start") && !startFlag){
+                Cursor rs = null;
+                Toast.makeText(v.getContext(), "빼액",Toast.LENGTH_SHORT).show();
+                if(buttonStart.getText().toString().equals("Start") && !startFlag){ //Start버튼 클릭
                     startFlag = true;
                     int position = Integer.parseInt(savePosition.getText().toString());
+                    String name = dataArrayList.get(position).getName();
+
                     dataArrayList.get(position).setType(1);
                     String sql = "update Event set Type=1 where id=?;";
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
+
                     adapter.notifyDataSetChanged();
+
+                    db.execSQL("delete from Save;");
+                    rs = db.rawQuery("select Max(ID) from Log", null);
+                    rs.moveToNext();
+                    db.execSQL("Insert into Save(MinID, EventName) values(?, ?);",new Object[]{rs.getInt(0), name});
+                    rs.close();
+
+                    sql = "insert into Log(EventName, Type) values(?, 0);";
+                    db.execSQL(sql, new Object[]{name});
+
                     Intent intent = new Intent(mActivity, LogService.class);
-                    intent.putExtra("eventName", textName.getText().toString());
                     mActivity.startService(intent);
-                }else if(buttonStart.getText().toString().equals("End")){
+                }else if(buttonStart.getText().toString().equals("End")){   //End버튼 클릭
                     startFlag = false;
                     int position = Integer.parseInt(savePosition.getText().toString());
+
+                    Intent intent = new Intent(mActivity, LogService.class);
+                    mActivity.stopService(intent);
+
                     dataArrayList.get(position).setType(0);
                     String sql = "update Event set Type=0 where id=?;";
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
                     adapter.notifyDataSetChanged();
-                    Intent intent = new Intent(mActivity, LogService.class);
-                    mActivity.stopService(intent);
+
+                    db.execSQL("insert into Log(Type) values(3);");
+
+                    rs = db.rawQuery("select * from Save;",null);
+                    rs.moveToNext();
+                    db.execSQL("Update Log set EventName=? where id>?",new Object[]{rs.getString(2),rs.getInt(1)});
+                    rs.close();
                 }
             }
         });

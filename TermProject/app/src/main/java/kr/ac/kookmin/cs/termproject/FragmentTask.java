@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-public class FragmentTask extends Fragment {
+public class FragmentTask extends Fragment{
     ArrayList<EventData> datas;
     ListView mListView;
     EventDataAdapter mEventDataAdapter;

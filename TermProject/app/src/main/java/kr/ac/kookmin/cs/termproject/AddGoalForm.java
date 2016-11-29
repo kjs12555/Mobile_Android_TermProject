@@ -134,7 +134,7 @@ public class AddGoalForm extends Activity {
 
     private void getDatasToDB() {
         ArrayList<String> data = new ArrayList<String>();
-        Cursor rs = db.rawQuery("select Name from Event;",null);
+        Cursor rs = db.rawQuery("select Distinct(Name) from Event;",null);
         while(rs.moveToNext()){
             data.add(rs.getString(0));
         }
