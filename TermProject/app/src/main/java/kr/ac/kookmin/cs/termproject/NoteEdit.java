@@ -2,6 +2,7 @@ package kr.ac.kookmin.cs.termproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
@@ -36,6 +37,12 @@ public class NoteEdit extends Activity {
 
         helper = new DBHelper(this.getApplicationContext(), "TermProject.db", null, 1);
         db = helper.getWritableDatabase();
+
+        Cursor rs = db.rawQuery("select LogName from Save;",null);
+        rs.moveToNext();
+        String name = rs.getString(0);
+        rs.close();
+        logName.setText(name);
 
         complete.setOnClickListener(new View.OnClickListener() {
             @Override

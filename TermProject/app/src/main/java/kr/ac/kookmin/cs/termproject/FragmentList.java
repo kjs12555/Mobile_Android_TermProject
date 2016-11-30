@@ -51,6 +51,7 @@ public class FragmentList extends Fragment {
         adapter = new LogSaveAdapter(dataArrayList, getLayoutInflater(savedInstanceState), helper, db);
         textList.setAdapter(adapter);
         dataBig = new ArrayList<>();
+        dataBig.add("All");
         dataBig.add("Event");
         dataBig.add("Log");
         adapterBig = new ArrayAdapter<>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, dataBig);
@@ -66,12 +67,15 @@ public class FragmentList extends Fragment {
                 //position에 따라 전체 Log이름으로 초기화하거나 Event의 이름으로 초기화 하거나 Log별로 초기화 합니다. DB를 작성하면 마저 작성할 예정
                 switch (position) {
                     case 0:
+                        dataSmall.add("All");
+                        break;
+                    case 1:
                         rs = db.rawQuery("select Distinct(EventName) from Log;", null);
                         while (rs.moveToNext()) {
                             dataSmall.add(rs.getString(0));
                         }
                         break;
-                    case 1:
+                    case 2:
                         rs = db.rawQuery("select Distinct(LogName) from Log;", null);
                         while (rs.moveToNext()) {
                             String name = rs.getString(0);
@@ -93,20 +97,24 @@ public class FragmentList extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //DB에서 해당하는 값을 가져와서 List를 지우고 다시 작성한다. DB작업을 마치고 작성할 예정입니다.
                 Cursor rs;
-                String args[] = new String[2];
-                if (bigSpinnerPosition == 0) {
-                    args[0] = "EventName";
-                } else {
-                    args[0] = "LogName";
+                if(bigSpinnerPosition!=0) {
+                    String args[] = new String[2];
+                    if (bigSpinnerPosition == 1) {
+                        args[0] = "EventName";
+                    } else {
+                        args[0] = "LogName";
+                    }
+                    args[1] = spinnerSmall.getSelectedItem().toString();
+                    rs = db.rawQuery("select * from Log where " + args[0] + "='" + args[1] + "' order by ID", null);
+                }else{
+                    rs = db.rawQuery("select * from Log;",null);
                 }
-                args[1] = spinnerSmall.getSelectedItem().toString();
-                rs = db.rawQuery("select * from Log where " + args[0] + "='" + args[1] + "' order by ID", null);
                 dataArrayList.clear();
                 while (rs.moveToNext()) {
                     dataArrayList.add(new LogSave(rs.getInt(0), rs.getDouble(1), rs.getDouble(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getLong(10), rs.getString(11)));
                 }
-                adapter.notifyDataSetChanged();
                 textList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
 
             @Override

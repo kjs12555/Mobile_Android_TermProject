@@ -114,8 +114,7 @@ public class EventDataAdapter extends BaseAdapter {
                     db.execSQL("Insert into Save(MinID, EventName) values(?, ?);",new Object[]{rs.getInt(0), name});
                     rs.close();
 
-                    sql = "insert into Log(EventName, Type) values(?, 0);";
-                    db.execSQL(sql, new Object[]{name});
+                    db.execSQL("insert into Log(Type) values(0);");
 
                     Intent intent = new Intent(mActivity, LogService.class);
                     mActivity.startService(intent);
@@ -193,4 +192,5 @@ public class EventDataAdapter extends BaseAdapter {
 
         return convertView;
     }
+
 }

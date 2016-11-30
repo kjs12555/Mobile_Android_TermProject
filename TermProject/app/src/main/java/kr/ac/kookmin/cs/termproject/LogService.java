@@ -35,10 +35,8 @@ public class LogService extends Service {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         helper = new DBHelper(this, "TermProject.db" ,null, 1);
         db = helper.getWritableDatabase();
-        Cursor rs = db.rawQuery("select * from Save",null);
-        rs.moveToNext();
-        String name = rs.getString(2);
-        gps = new GPSListener(db, name);
+
+        gps = new GPSListener(db);
 
         try {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*10, 0, gps);

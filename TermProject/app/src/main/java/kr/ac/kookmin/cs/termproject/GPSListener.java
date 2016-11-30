@@ -17,15 +17,13 @@ import java.util.Locale;
 
 public class GPSListener implements LocationListener {
     SQLiteDatabase db;
-    String eventName;
 
-    public GPSListener(SQLiteDatabase db, String eventName){
+    public GPSListener(SQLiteDatabase db){
         this.db = db;
-        this.eventName = eventName;
     }
 
     public void onLocationChanged(Location location) {
-        db.execSQL("insert into Log(EventName, Latitude, Longitude, Foot, Type) values(?, ?, ?, ?, ?)", new Object[]{eventName, location.getLatitude(), location.getLongitude(), 0, 1}); //타입 - 시작 : 0, 진행 : 1 , 노트 : 2, 끝 : 3
+        db.execSQL("insert into Log(Latitude, Longitude, Foot, Type) values(?, ?, ?, ?)", new Object[]{location.getLatitude(), location.getLongitude(), 0, 1}); //타입 - 시작 : 0, 진행 : 1 , 노트 : 2, 끝 : 3
     }
     public void onProviderDisabled(String provider) {}
     public void onProviderEnabled(String provider) {}

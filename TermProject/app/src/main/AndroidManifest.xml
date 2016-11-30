@@ -25,11 +25,11 @@
         <activity
             android:name=".AddEvent"
             android:theme="@android:style/Theme.Dialog"/>
-        <activity android:name=".AddGoal" />
         <activity android:name=".AddGoalForm" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".GoalResult" />
         <activity android:name=".NoteEdit" />
+        <activity android:name=".AddGoal" />
 
         <service
             android:name=".LogService"

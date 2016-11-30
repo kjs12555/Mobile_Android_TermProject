@@ -88,6 +88,13 @@ public class AddGoal extends Activity {
                 String goalName = name.getText().toString();
                 String start = startText.getText().toString();
                 String end = endText.getText().toString();
+
+                Cursor rs;
+                rs = db.rawQuery("select date(?)>=date(?);", new String[]{end, start});
+                rs.moveToNext();
+                int check = rs.getInt(0);
+                rs.close();
+
                 if(goalName.equals("")){
                     Toast.makeText(v.getContext(), "이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                     return;
@@ -100,10 +107,13 @@ public class AddGoal extends Activity {
                 }else if(end.equals("클릭")){
                     Toast.makeText(v.getContext(), "종료 날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show();
                     return;
+                }else if(check==0){
+                    Toast.makeText(v.getContext(), "종료 날짜가 시작 날짜보다 이전입니다.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 String sql = "select Max(ID) from Goal;";
-                Cursor rs = db.rawQuery(sql, null);
+                rs = db.rawQuery(sql, null);
                 rs.moveToNext();
                 intent.putExtra("maxId", rs.getInt(0));
                 int idx = datas.size()-1;
