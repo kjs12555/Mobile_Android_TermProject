@@ -33,20 +33,21 @@
 
     </LinearLayout>
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:id="@+id/goal_list"
-        android:layout_height="180dp" />
+        android:layout_height="match_parent">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:id="@+id/result_list"
-        android:layout_height="180dp" />
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/goal_list"
+            android:layout_height="210dp" />
 
-    <TextView
-        android:text="결과 (총 수, 달성한 목표 수)"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textSize="30sp" />
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/result_list"
+            android:layout_height="210dp" />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -63,7 +63,8 @@
     <ListView
         android:layout_width="match_parent"
         android:id="@+id/list_list"
-        android:layout_height="200dp" />
+        android:layout_weight="0.28"
+        android:layout_height="330dp" />
 
     <Button
         android:text="Statistics"
@@ -72,5 +73,5 @@
         android:id="@+id/statistics"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 </LinearLayout>

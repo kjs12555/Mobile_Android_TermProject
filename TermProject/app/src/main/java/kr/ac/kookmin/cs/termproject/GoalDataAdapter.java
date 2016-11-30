@@ -63,7 +63,6 @@ public class GoalDataAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int position = Integer.parseInt(savePosition.getText().toString());
                 Intent intent = new Intent(mActivity, GoalResult.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 intent.putExtra("position", position);
                 intent.putExtra("goalSave", dataArrayList.get(position));
                 mActivity.startActivity(intent);
@@ -86,7 +85,7 @@ public class GoalDataAdapter extends BaseAdapter {
         GoalData data = dataArrayList.get(position);
         textName.setText(data.getGoalName());
         savePosition.setText(Integer.toString(position));
-        startEndText.setText(Integer.toString(data.getStart())+" ~ "+Integer.toString(data.getEnd()));
+        startEndText.setText(data.getStart()+" ~ "+data.getEnd());
 
         return convertView;
     }

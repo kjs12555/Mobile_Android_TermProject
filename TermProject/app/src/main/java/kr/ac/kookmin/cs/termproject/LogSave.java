@@ -6,8 +6,8 @@ package kr.ac.kookmin.cs.termproject;
 
 public class LogSave {
     private int id; //0
-    private int latitude;   //1
-    private int longitude;  //2
+    private double latitude;   //1
+    private double longitude;  //2
     private String cameraPath;  //3
     private String logName; //4
     private String eventName;   //5
@@ -15,8 +15,10 @@ public class LogSave {
     private String time;   //7
     private int foot;   //8
     private int type;   //9
+    private long timeGap;
+    private String noteName;
 
-    public LogSave(int id, int latitude, int longitude, String cameraPath, String logName, String eventName, String note, String time, int foot, int type) {
+    public LogSave(int id, double latitude, double longitude, String cameraPath, String logName, String eventName, String note, String time, int foot, int type, long timeGap, String noteName) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -27,17 +29,21 @@ public class LogSave {
         this.time = time;
         this.foot = foot;
         this.type = type;
+        this.timeGap = timeGap;
+        this.noteName = noteName;
     }
+
+    public void setCameraPath(String cameraPath) { this.cameraPath = cameraPath; }
 
     public int getId() {
         return id;
     }
 
-    public int getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public int getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
@@ -67,5 +73,13 @@ public class LogSave {
 
     public int getType() {
         return type;
+    }
+
+    public long getTimeGap() {
+        return timeGap;
+    }
+
+    public String getNoteName() {
+        return noteName;
     }
 }

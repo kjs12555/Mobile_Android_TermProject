@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 /**
  * Created by user on 2016-11-28.
@@ -20,6 +22,7 @@ public class GoalResult extends Activity {
     DBHelper helper;
     SQLiteDatabase db;
     ArrayList<GoalSave> goalSaves;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,9 @@ public class GoalResult extends Activity {
 
             ListView goalList = (ListView) findViewById(R.id.goal_list);
             ListView resultList = (ListView) findViewById(R.id.result_list);
-            GoalResult_GoalAdapter goalAdapter = new GoalResult_GoalAdapter(goalSaves, getLayoutInflater());
-            GoalResult_ResultAdapter resultAdapter = new GoalResult_ResultAdapter();
+            LayoutInflater inflater = getLayoutInflater();
+            GoalResult_GoalAdapter goalAdapter = new GoalResult_GoalAdapter(goalSaves, inflater);
+            GoalResult_ResultAdapter resultAdapter = new GoalResult_ResultAdapter(data, inflater, helper, db);
             goalList.setAdapter(goalAdapter);
             resultList.setAdapter(resultAdapter);
 

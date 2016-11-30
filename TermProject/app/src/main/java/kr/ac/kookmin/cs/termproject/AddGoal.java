@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -100,13 +101,7 @@ public class AddGoal extends Activity {
                     Toast.makeText(v.getContext(), "종료 날짜를 선택해 주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int startInt = Integer.parseInt(start);
-                int endInt = -1;
-                if(endFlag){    //날짜 자동완성 기능
-                    endInt = moveDay(startInt, endType);
-                }else{
-                    endInt = Integer.parseInt(end);
-                }
+
                 String sql = "select Max(ID) from Goal;";
                 Cursor rs = db.rawQuery(sql, null);
                 rs.moveToNext();
@@ -115,7 +110,7 @@ public class AddGoal extends Activity {
                 datas.get(idx).setType(datas.get(idx).getType()+1000);
                 for(GoalSave i : datas){
                     sql = "insert into Goal(GoalName, EventName, Type, N, Start, End) values(?, ?, ?, ?, ?, ?);";
-                    db.execSQL(sql, new Object[]{goalName, i.getEventName(), i.getType(), i.getN(), startInt, endInt});
+                    db.execSQL(sql, new Object[]{goalName, i.getEventName(), i.getType(), i.getN(), start, end});
                 }
                 setResult(RESULT_OK, intent);
                 finish();
@@ -142,8 +137,8 @@ public class AddGoal extends Activity {
                     if(startText.getText().toString().equals("클릭")) {
                         endText.setText("자동완성");
                     }else{
-                        int startInt = Integer.parseInt(startText.getText().toString());
-                        endText.setText(Integer.toString(moveDay(startInt, endType)));
+                        String start = startText.getText().toString();
+                        endText.setText(moveDay(start, endType));
                     }
                 }
                 goalDataAdapter.dataArrayList.add(new GoalSave(-1, rEventName, rType, rN));
@@ -152,8 +147,9 @@ public class AddGoal extends Activity {
                 if(data.getBooleanExtra("startDateFlag",false)){
                     startText.setText(data.getStringExtra("date"));
                     if(endFlag){
-                        int startInt = Integer.parseInt(startText.getText().toString());
-                        endText.setText(Integer.toString(moveDay(startInt, endType)));
+                        String start = startText.getText().toString();
+                        Log.d("DDDDDDDDDDDDDDD", start);
+                        endText.setText(moveDay(start, endType));
                     }
                 }else{
                     endText.setText(data.getStringExtra("date"));
@@ -161,8 +157,8 @@ public class AddGoal extends Activity {
             }
         }
     }
-    public int moveDay(int startDate, int type){    //type : 0-하루, 1-일주일, 2-한 달
-        int res=startDate;
+    public String moveDay(String startDateStr, int type){    //type : 0-하루, 1-일주일, 2-한 달
+        int startDate = Integer.parseInt(startDateStr.replaceAll("-",""));
         int year = startDate/10000;
         int month = startDate%10000/100;
         int day = startDate%100;
@@ -193,8 +189,16 @@ public class AddGoal extends Activity {
                 }
             }
         }
-        res = year*10000+month*100+day;
+        String strMonth = Integer.toString(month);
+        String strDay = Integer.toString(day);
+        if(month<10){
+            strMonth="0"+strMonth;
+        }
+        if(day<10){
+            strDay = "0"+strDay;
+        }
+        String returnResult = year+"-"+strMonth+"-"+strDay;
 
-        return res;
+        return returnResult;
     }
 }

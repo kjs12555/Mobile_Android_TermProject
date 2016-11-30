@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 public class LogService extends Service {
 
-    LocationManager lm;
+    static LocationManager lm;
     GPSListener gps;
     DBHelper helper;
     SQLiteDatabase db;

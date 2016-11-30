@@ -8,23 +8,29 @@ import java.util.ArrayList;
 public class GoalData implements Serializable {
     private String goalName;
     private ArrayList<GoalSave> datas;
-    private int start;
-    private int end;
+    private String start;
+    private String end;
 
-    public GoalData(String goalName, ArrayList<GoalSave> datas, int start, int end){
+    public GoalData(String goalName, ArrayList<GoalSave> datas, String start, String end) {
         this.goalName = goalName;
         this.datas = datas;
         this.start = start;
         this.end = end;
     }
 
-    public String getGoalName(){
+    public String getGoalName() {
         return goalName;
     }
 
-    public ArrayList<GoalSave> getDatas() { return datas; }
+    public ArrayList<GoalSave> getDatas() {
+        return datas;
+    }
 
-    public int getStart() { return start; }
+    public String getStart() {
+        return start;
+    }
 
-    public int getEnd() { return end; }
+    public String getEnd() {
+        return end;
+    }
 }

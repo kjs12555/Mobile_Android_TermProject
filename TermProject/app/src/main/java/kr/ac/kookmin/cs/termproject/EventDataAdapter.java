@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -81,11 +85,18 @@ public class EventDataAdapter extends BaseAdapter {
             }
         });
 
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, NoteEdit.class);
+                mActivity.startActivity(intent);
+            }
+        });
+
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Cursor rs = null;
-                Toast.makeText(v.getContext(), "빼액",Toast.LENGTH_SHORT).show();
                 if(buttonStart.getText().toString().equals("Start") && !startFlag){ //Start버튼 클릭
                     startFlag = true;
                     int position = Integer.parseInt(savePosition.getText().toString());
@@ -124,8 +135,30 @@ public class EventDataAdapter extends BaseAdapter {
 
                     rs = db.rawQuery("select * from Save;",null);
                     rs.moveToNext();
-                    db.execSQL("Update Log set EventName=? where id>?",new Object[]{rs.getString(2),rs.getInt(1)});
+                    int tmpID = rs.getInt(1);
+                    db.execSQL("Update Log set EventName=?, LogName=? where id>?",new Object[]{rs.getString(2), rs.getString(3) , tmpID});
                     rs.close();
+
+                    rs = db.rawQuery("select ID from Log where id>? order by id;",new String[]{Integer.toString(tmpID)});
+                    rs.moveToNext();
+                    int minID = rs.getInt(0);
+                    rs.moveToLast();
+                    int maxID = rs.getInt(0);
+                    rs.close();
+
+                    rs = db.rawQuery("select Time from Log where id="+minID+" or id="+maxID+" order by id;",null);
+                    rs.moveToNext();
+                    String minTime = rs.getString(0);
+                    rs.moveToNext();
+                    String maxTime = rs.getString(0);
+                    rs.close();
+
+                    rs = db.rawQuery("select strftime('%s','"+maxTime+"')-strftime('%s','"+minTime+"');",null);
+                    rs.moveToNext();
+                    long gapTime = rs.getLong(0);
+                    rs.close();
+
+                    db.execSQL("Update Log set TimeGap=? where id=?", new Object[]{gapTime, maxID});
                 }
             }
         });

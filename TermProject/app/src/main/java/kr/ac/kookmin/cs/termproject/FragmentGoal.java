@@ -63,7 +63,7 @@ public class FragmentGoal extends Fragment {
             int type = rs.getInt(3);
             datasTmp.add(new GoalSave(rs.getInt(0), rs.getString(2), type, rs.getInt(4)));
             if(type > 1000){
-                datas.add(new GoalData(rs.getString(1),datasTmp, rs.getInt(5), rs.getInt(6)));
+                datas.add(new GoalData(rs.getString(1),datasTmp, rs.getString(5), rs.getString(6)));
                 datasTmp = new ArrayList<GoalSave>();
             }
         }
@@ -80,8 +80,8 @@ public class FragmentGoal extends Fragment {
                 Cursor rs = db.rawQuery(sql, null);
                 rs.moveToNext();
                 String goalName = rs.getString(1);
-                int start = rs.getInt(5);
-                int end = rs.getInt(6);
+                String start = rs.getString(5);
+                String end = rs.getString(6);
                 do{
                     datasTmp.add(new GoalSave(rs.getInt(0), rs.getString(2), rs.getInt(3), rs.getInt(4)));
                 }while(rs.moveToNext());

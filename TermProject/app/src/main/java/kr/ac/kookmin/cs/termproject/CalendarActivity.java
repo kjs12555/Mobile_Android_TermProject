@@ -58,7 +58,15 @@ public class CalendarActivity extends AppCompatActivity {
             public void onDataSelected(AdapterView parent, View v, int position, long id) {
                 // 현재 선택한 일자 정보 표시
                 MonthItem curItem = (MonthItem) monthViewAdapter.getItem(position);
-                txt = Integer.toString(monthViewAdapter.getCurYear()*10000+(monthViewAdapter.getCurMonth()+1)*100+curItem.getDay());
+                String month = Integer.toString(curMonth+1);
+                String day = Integer.toString(curItem.getDay());
+                if(month.length()==1){
+                    month = "0"+month;
+                }
+                if(day.length()==1){
+                    day = "0"+day;
+                }
+                txt = monthViewAdapter.getCurYear()+"-"+month+"-"+day;
             }
         });
 
