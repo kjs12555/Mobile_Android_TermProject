@@ -8,12 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,8 +74,8 @@ public class EventDataAdapter extends BaseAdapter {
         final Button buttonStart = (Button) convertView.findViewById(R.id.start);
         final Button buttonDelete = (Button) convertView.findViewById(R.id.del);
         final Button buttonEdit = (Button) convertView.findViewById(R.id.edit);
-        final TextView savePosition = (TextView) convertView.findViewById(R.id.event_position);
-        final RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.event_layout);
+        final TextView savePosition = (TextView)convertView.findViewById(R.id.event_position);
+        final RelativeLayout layout = (RelativeLayout)convertView.findViewById(R.id.event_layout);
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
