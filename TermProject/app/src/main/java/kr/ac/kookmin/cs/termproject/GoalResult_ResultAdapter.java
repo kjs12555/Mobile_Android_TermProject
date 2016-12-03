@@ -108,7 +108,7 @@ public class GoalResult_ResultAdapter extends BaseAdapter {
                         text = text.concat("한 달에 ");
                         break;
                 }
-                rs = db.rawQuery("select Count(*) from Log where EventName=? and Time>=? and Time<Date(?, '+1 day');",new String[]{data.getEventName(), dataArrayList.getStart(), dataArrayList.getEnd()});
+                rs = db.rawQuery("select Count(*) from Log where EventName=? and Time>=? and Time<Date(?, '+1 day') and Type=3;",new String[]{data.getEventName(), dataArrayList.getStart(), dataArrayList.getEnd()});
                 rs.moveToNext();
                 NCompare = rs.getInt(0);
                 rs.close();
