@@ -23,7 +23,8 @@ public class GPSListener implements LocationListener {
     }
 
     public void onLocationChanged(Location location) {
-        db.execSQL("insert into Log(Latitude, Longitude, Foot, Type) values(?, ?, ?, ?)", new Object[]{location.getLatitude(), location.getLongitude(), 0, 1}); //타입 - 시작 : 0, 진행 : 1 , 노트 : 2, 끝 : 3
+        db.execSQL("insert into Log(Latitude, Longitude, Foot, Type) values(?, ?, ?, ?)", new Object[]{location.getLatitude(), location.getLongitude(), LogService.foot , 1}); //타입 - 시작 : 0, 진행 : 1 , 노트 : 2, 끝 : 3
+        db.execSQL("update Save set Foot=?;",new Object[]{LogService.foot});
     }
     public void onProviderDisabled(String provider) {}
     public void onProviderEnabled(String provider) {}

@@ -70,7 +70,7 @@ public class NoteEdit extends Activity {
                 }
                 if(resultLocation!=null){
                     db.execSQL("update Save set LogName=?", new Object[]{logName.getText().toString()});
-                    db.execSQL("insert into Log(Latitude, Longitude, CameraPath, Note, Type, NoteName) values(? ,? ,? ,? ,? ,?);",new Object[]{resultLocation.getLatitude(), resultLocation.getLongitude(), saveUri, note.getText().toString(), 2, noteName.getText().toString() });
+                    db.execSQL("insert into Log(Latitude, Longitude, CameraPath, Note, Foot, Type, NoteName) values(?, ? ,? ,? ,? ,? ,?);",new Object[]{resultLocation.getLatitude(), resultLocation.getLongitude(), saveUri, note.getText().toString(), LogService.foot, 2, noteName.getText().toString() });
                 }
                 finish();
             }

@@ -204,7 +204,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
 
                 String text = "로그 이름 : "+data.getLogName()+"\n"+"이벤트 이름 : "+data.getEventName()+"\n"+"노트 이름 :  "+data.getNoteName()+"\n";
                 text = text.concat(data.getNote()+"\n");
-                text = text.concat("업데이트 시간 : "+data.getTime());
+                text = text.concat("업데이트 시간 : "+data.getTime()+"\n");
+                text = text.concat("걸은 횟수 : "+data.getFoot());
 
                 textView.setText(text);
 

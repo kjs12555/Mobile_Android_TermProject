@@ -133,7 +133,7 @@ public class EventDataAdapter extends BaseAdapter {
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
                     adapter.notifyDataSetChanged();
 
-                    db.execSQL("insert into Log(Type) values(3);");
+                    db.execSQL("insert into Log(Type, Foot) values(3, ?);", new Object[]{LogService.foot});
 
                     rs = db.rawQuery("select * from Save;",null);
                     rs.moveToNext();
