@@ -1,13 +1,20 @@
 package kr.ac.kookmin.cs.termproject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -22,12 +29,15 @@ public class LogSaveAdapter extends BaseAdapter{
     LayoutInflater inflater;
     DBHelper helper;
     SQLiteDatabase db;
+    LinearLayout layout;
+    Activity mActivity;
 
-    public LogSaveAdapter(ArrayList<LogSave> dataArrayList, LayoutInflater inflater, DBHelper helper, SQLiteDatabase db) {
+    public LogSaveAdapter(ArrayList<LogSave> dataArrayList, LayoutInflater inflater, DBHelper helper, SQLiteDatabase db, Activity ac) {
         this.dataArrayList = dataArrayList;
         this.inflater = inflater;
         this.helper = helper;
         this.db = db;
+        mActivity = ac;
     }
 
     @Override
@@ -54,13 +64,28 @@ public class LogSaveAdapter extends BaseAdapter{
         if(convertView == null){
             convertView = inflater.inflate(R.layout.list_row, null);
         }
-        LogSave data = dataArrayList.get(position);
+        final LogSave data = dataArrayList.get(position);
+        final TextView savePosition = (TextView)convertView.findViewById(R.id.list_position);
         int type = data.getType();
 
         TextView general = (TextView)convertView.findViewById(R.id.list_row_general);
-        String text = "";
-
         ImageView image = (ImageView)convertView.findViewById(R.id.log_imageView);
+        layout = (LinearLayout)convertView.findViewById(R.id.list_layout);
+
+        savePosition.setText(Integer.toString(position));
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(data.getType()==2){
+                    Intent intent = new Intent(v.getContext(), NoteDialog.class);
+                    intent.putExtra("eventPosition", Integer.parseInt(savePosition.getText().toString()));
+                    mActivity.startActivity(intent);
+                }
+            }
+        });
+
+        String text = "";
 
         image.setVisibility(View.INVISIBLE);
         if(type==0 || type==3){

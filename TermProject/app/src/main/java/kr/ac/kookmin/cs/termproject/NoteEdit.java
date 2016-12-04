@@ -1,6 +1,8 @@
 package kr.ac.kookmin.cs.termproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -50,7 +52,7 @@ public class NoteEdit extends Activity {
                 //완료를 눌렀을 때.
                 Location networkLocation=null;
                 Location gpsLocation=null;
-                Location resultLocation = null;
+                Location resultLocation;
                 try {
                     networkLocation = LogService.lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     gpsLocation = LogService.lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -79,8 +81,25 @@ public class NoteEdit extends Activity {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 1);
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("사진을 넣을 방법을 선택해주세요.");
+                builder.setItems(new CharSequence[]{"카메라 사용", "갤러리 사용"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which==0){
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, 1);
+                        }else{
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                            startActivityForResult(intent, 1);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }

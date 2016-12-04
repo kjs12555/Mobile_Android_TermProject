@@ -48,7 +48,7 @@ public class FragmentList extends Fragment {
         db = helper.getWritableDatabase();
         textList = (ListView) v.findViewById(R.id.list_list);
         dataArrayList = new ArrayList<>();
-        adapter = new LogSaveAdapter(dataArrayList, getLayoutInflater(savedInstanceState), helper, db);
+        adapter = new LogSaveAdapter(dataArrayList, getLayoutInflater(savedInstanceState), helper, db, getActivity());
         textList.setAdapter(adapter);
         dataBig = new ArrayList<>();
         dataBig.add("All");

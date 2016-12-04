@@ -1,5 +1,6 @@
 package kr.ac.kookmin.cs.termproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -24,10 +25,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     DBHelper helper;
     SQLiteDatabase db;
 
+    static Activity main;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        main = this;
 
         helper = new DBHelper(this, "TermProject.db" ,null, 1);
         db = helper.getWritableDatabase();
@@ -94,13 +99,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         int tabPosition = intent.getIntExtra("tabPosition",-1);
+        int resultCode = intent.getIntExtra("resultCode", 0);
+
         if(tabPosition==0){
             FragmentTask task = (FragmentTask) mFragment;
-            int resultCode = intent.getIntExtra("resultCode", 0);
             if(resultCode==1) {    //이벤트 이름 수정
                 int position = intent.getIntExtra("eventPosition", -1);
-                String name = intent.getStringExtra("modifyName");
                 if (position != -1) {
+                    String name = intent.getStringExtra("modifyName");
                     EventData data = task.mEventDataAdapter.dataArrayList.get(position);
                     data.setName(name);
                     task.mEventDataAdapter.notifyDataSetChanged();
@@ -111,8 +117,22 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     Toast.makeText(this, "position을 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
-        }else if(tabPosition==3){   //Goal탭 관련으로 호출된 경우
-            FragmentGoal goal = (FragmentGoal) mFragment;
+        }else if(tabPosition==2){   //List탭 관련으로 호출된 경우
+            FragmentList list = (FragmentList) mFragment;
+            if(resultCode==1){  //Note 사진 수정
+                int position = intent.getIntExtra("eventPosition", -1);
+                if(position!=-1){
+                    String modifyUri = intent.getStringExtra("modifyUri");
+                    LogSave data = list.adapter.dataArrayList.get(position);
+                    data.setCameraPath(modifyUri);
+                    list.adapter.notifyDataSetChanged();
+                    int id = data.getId();
+                    String sql = "update Log set CameraPath=? where id=?;";
+                    db.execSQL(sql, new Object[]{modifyUri, id});
+                }else{
+                    Toast.makeText(this, "position을 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 }

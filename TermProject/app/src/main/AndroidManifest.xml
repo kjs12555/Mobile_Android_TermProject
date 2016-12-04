@@ -30,6 +30,9 @@
         <activity android:name=".GoalResult" />
         <activity android:name=".NoteEdit" />
         <activity android:name=".AddGoal" />
+        <activity
+            android:name=".NoteDialog"
+            android:theme="@android:style/Theme.Dialog"/>
 
         <service
             android:name=".LogService"
