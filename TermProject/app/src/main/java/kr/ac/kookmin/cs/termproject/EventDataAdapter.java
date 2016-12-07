@@ -135,7 +135,7 @@ public class EventDataAdapter extends BaseAdapter {
 
                     Intent intent = new Intent(mActivity, LogService.class);
                     mActivity.stopService(intent);
-                    
+
                     chronometer.setBase(SystemClock.elapsedRealtime());
                     chronometer.stop();
 

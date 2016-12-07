@@ -58,10 +58,13 @@ public class FragmentList extends Fragment {
         spinnerBig = (Spinner) v.findViewById(R.id.list_big_spinner);
         spinnerBig.setAdapter(adapterBig);
         spinnerSmall = (Spinner) v.findViewById(R.id.list_small_spinner);
+        dataSmall = new ArrayList<>();
+        adapterSmall = new ArrayAdapter<>(v.getContext(), R.layout.support_simple_spinner_dropdown_item, dataSmall);
+        spinnerSmall.setAdapter(adapterSmall);
         spinnerBig.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> adapterView, View view, int position, long l) {
-                dataSmall = new ArrayList<>();
+                dataSmall.clear();
                 Cursor rs;
                 bigSpinnerPosition = position;
                 //position에 따라 전체 Log이름으로 초기화하거나 Event의 이름으로 초기화 하거나 Log별로 초기화 합니다. DB를 작성하면 마저 작성할 예정
@@ -74,6 +77,7 @@ public class FragmentList extends Fragment {
                         while (rs.moveToNext()) {
                             dataSmall.add(rs.getString(0));
                         }
+                        rs.close();
                         break;
                     case 2:
                         rs = db.rawQuery("select Distinct(LogName) from Log;", null);
@@ -81,10 +85,10 @@ public class FragmentList extends Fragment {
                             String name = rs.getString(0);
                             dataSmall.add(name);
                         }
+                        rs.close();
                         break;
                 }
-                adapterSmall = new ArrayAdapter<>(view.getContext(), R.layout.support_simple_spinner_dropdown_item, dataSmall);
-                spinnerSmall.setAdapter(adapterSmall);
+                adapterSmall.notifyDataSetChanged();
             }
 
             @Override
@@ -113,7 +117,7 @@ public class FragmentList extends Fragment {
                 while (rs.moveToNext()) {
                     dataArrayList.add(new LogSave(rs.getInt(0), rs.getDouble(1), rs.getDouble(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getLong(10), rs.getString(11)));
                 }
-                textList.setAdapter(adapter);
+                rs.close();
                 adapter.notifyDataSetChanged();
             }
 
