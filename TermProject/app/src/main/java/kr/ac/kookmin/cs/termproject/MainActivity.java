@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     String modifyUri = intent.getStringExtra("modifyUri");
                     LogSave data = list.adapter.dataArrayList.get(position);
                     data.setCameraPath(modifyUri);
+                    Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
                     list.adapter.notifyDataSetChanged();
                     int id = data.getId();
                     String sql = "update Log set CameraPath=? where id=?;";

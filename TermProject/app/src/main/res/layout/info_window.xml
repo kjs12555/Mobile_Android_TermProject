@@ -14,7 +14,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:src="@android:drawable/ic_menu_camera"
             android:id="@+id/info_image"
             android:layout_weight="1"
             android:layout_height="match_parent" />

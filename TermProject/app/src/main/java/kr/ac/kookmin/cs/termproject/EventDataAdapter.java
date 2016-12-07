@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class EventDataAdapter extends BaseAdapter {
     SQLiteDatabase db;
     boolean startFlag=false;
     Activity mActivity;
+    static TextView taskRun;
 
     public EventDataAdapter(LayoutInflater inflater, ArrayList<EventData> data, DBHelper helper, SQLiteDatabase db, Activity ac){
         dataArrayList = data;
@@ -76,6 +79,8 @@ public class EventDataAdapter extends BaseAdapter {
         final Button buttonEdit = (Button) convertView.findViewById(R.id.edit);
         final TextView savePosition = (TextView)convertView.findViewById(R.id.event_position);
         final RelativeLayout layout = (RelativeLayout)convertView.findViewById(R.id.event_layout);
+        final Chronometer chronometer = (Chronometer)convertView.findViewById(R.id.event_chronometer);
+        final TextView run = (TextView)convertView.findViewById(R.id.run);
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,16 +113,19 @@ public class EventDataAdapter extends BaseAdapter {
                     dataArrayList.get(position).setType(1);
                     String sql = "update Event set Type=1 where id=?;";
                     db.execSQL(sql, new Object[]{dataArrayList.get(position).getId()});
-
                     adapter.notifyDataSetChanged();
 
                     db.execSQL("delete from Save;");
                     rs = db.rawQuery("select Max(ID) from Log", null);
                     rs.moveToNext();
-                    db.execSQL("Insert into Save(MinID, EventName) values(?, ?);",new Object[]{rs.getInt(0), name});
+                    db.execSQL("Insert into Save(MinID, EventName, StartTime) values(?, ?, ?);",new Object[]{rs.getInt(0), name, SystemClock.elapsedRealtime()});
                     rs.close();
 
                     db.execSQL("insert into Log(Type) values(0);");
+
+                    taskRun = run;
+                    chronometer.setBase(SystemClock.elapsedRealtime());
+                    chronometer.start();
 
                     Intent intent = new Intent(mActivity, LogService.class);
                     mActivity.startService(intent);
@@ -127,6 +135,9 @@ public class EventDataAdapter extends BaseAdapter {
 
                     Intent intent = new Intent(mActivity, LogService.class);
                     mActivity.stopService(intent);
+                    
+                    chronometer.setBase(SystemClock.elapsedRealtime());
+                    chronometer.stop();
 
                     dataArrayList.get(position).setType(0);
                     String sql = "update Event set Type=0 where id=?;";
@@ -137,8 +148,8 @@ public class EventDataAdapter extends BaseAdapter {
 
                     rs = db.rawQuery("select * from Save;",null);
                     rs.moveToNext();
-                    int tmpID = rs.getInt(1);
-                    db.execSQL("Update Log set EventName=?, LogName=? where id>?",new Object[]{rs.getString(2), rs.getString(3) , tmpID});
+                    int tmpID = rs.getInt(0);
+                    db.execSQL("Update Log set EventName=?, LogName=? where id>?",new Object[]{rs.getString(1), rs.getString(2) , tmpID});
                     rs.close();
 
                     rs = db.rawQuery("select ID from Log where id>? order by id;",new String[]{Integer.toString(tmpID)});
@@ -187,6 +198,13 @@ public class EventDataAdapter extends BaseAdapter {
             buttonStart.setText("End");
             buttonEdit.setVisibility(View.VISIBLE);
             buttonDelete.setVisibility(View.INVISIBLE);
+            Cursor rs = db.rawQuery("select Foot, StartTime from Save;", null);
+            rs.moveToNext();
+            run.setText(rs.getInt(0)+"");
+            taskRun = run;
+            chronometer.setBase(rs.getLong(1));
+            chronometer.start();
+            rs.close();
         }else{
             buttonStart.setText("Start");
             buttonEdit.setVisibility(View.INVISIBLE);

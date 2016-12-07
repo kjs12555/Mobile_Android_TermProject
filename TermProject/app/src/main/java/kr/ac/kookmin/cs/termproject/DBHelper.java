@@ -22,7 +22,7 @@ class DBHelper extends SQLiteOpenHelper {
         db.execSQL("Create Table Event(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name Text, Type Integer);");
         db.execSQL("Create Table Goal(ID INTEGER PRIMARY KEY AUTOINCREMENT, GoalName Text, EventName Text, Type Integer, N Integer, Start Date, End Date)");
         db.execSQL("Create Table Log(ID INTEGER PRIMARY KEY AUTOINCREMENT, Latitude Real, Longitude Real, CameraPath Text, LogName Text, EventName Text, Note Text, Time Real default (datetime('now','localtime')), Foot Integer default(0), Type Integer, TimeGap Real default(0), NoteName Text)");
-        db.execSQL("Create Table Save(ID INTEGER PRIMARY KEY AUTOINCREMENT, MinID Integer, EventName Text, LogName Text default('이름없음'), Foot integer default(0))");
+        db.execSQL("Create Table Save(MinID Integer, EventName Text, LogName Text default('이름없음'), Foot integer default(0), StartTime Real)");
         Toast.makeText(context, "DB 생성 완료", Toast.LENGTH_SHORT).show();
     }
 

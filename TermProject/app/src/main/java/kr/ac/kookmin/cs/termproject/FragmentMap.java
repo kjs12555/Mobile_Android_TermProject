@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.R.drawable.ic_menu_camera;
+
 public class FragmentMap extends Fragment implements OnMapReadyCallback {
     GoogleMap mMap;
     View v;
@@ -200,7 +202,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
 
                 try {
                     imageView.setImageURI(Uri.parse(data.getCameraPath()));
-                }catch (Exception e){}
+                }catch (Exception e){
+                    imageView.setImageResource(android.R.drawable.ic_menu_camera);
+                }
 
                 String text = "로그 이름 : "+data.getLogName()+"\n"+"이벤트 이름 : "+data.getEventName()+"\n"+"노트 이름 :  "+data.getNoteName()+"\n";
                 text = text.concat(data.getNote()+"\n");

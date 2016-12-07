@@ -114,6 +114,7 @@ public class LogSaveAdapter extends BaseAdapter{
                 }catch (Exception e){
                     data.setCameraPath("");
                     db.execSQL("update Log set CameraPath='' where id=?",new Object[]{data.getId()});
+                    image.setImageResource(android.R.drawable.ic_menu_camera);
                 }
             }
             text = text.concat("  걸은 횟수:"+Integer.toString(data.getFoot()));

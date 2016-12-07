@@ -15,6 +15,7 @@ import android.hardware.SensorManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.util.TimeUtils;
 import android.widget.Toast;
@@ -64,6 +65,7 @@ public class LogService extends Service implements SensorEventListener{
         Cursor rs = db.rawQuery("select Foot from Save;",null);
         rs.moveToNext();
         foot = rs.getInt(0);
+        rs.close();
 
         gps = new GPSListener(db);
 
@@ -72,8 +74,8 @@ public class LogService extends Service implements SensorEventListener{
         }
 
         try {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*10, 0, gps);
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000*10, 0, gps);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*60, 10, gps);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000*60, 10, gps);
         } catch (SecurityException ex) {
             Toast.makeText(this, "Location 권한 없음", Toast.LENGTH_SHORT).show();
             onDestroy();
@@ -91,6 +93,10 @@ public class LogService extends Service implements SensorEventListener{
         sensorManager.unregisterListener(this);
 
         foot = 0;
+
+        if(EventDataAdapter.taskRun!=null) {
+            EventDataAdapter.taskRun.setText(Integer.toString(foot));
+        }
 
         super.onDestroy();
     }
@@ -114,12 +120,17 @@ public class LogService extends Service implements SensorEventListener{
 
                 speed = Math.abs(x+y+z-last_X-last_Y-last_Z)/gabOfTime*10000;
 
-                if(speed > SHAKE){
-                    foot++;
-                }
                 last_X = x;
                 last_Y = y;
                 last_Z = z;
+
+                if(speed > SHAKE){
+                    foot++;
+                    if(EventDataAdapter.taskRun!=null){
+                        EventDataAdapter.taskRun.setText(Integer.toString(foot));
+                    }
+                    db.execSQL("update Save set Foot=?;",new Object[]{LogService.foot});
+                }
             }
         }
     }

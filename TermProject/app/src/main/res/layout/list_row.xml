@@ -34,7 +34,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:src="@android:drawable/ic_menu_camera"
             android:id="@+id/log_imageView"
             android:layout_weight="1"
             android:layout_alignParentTop="true"
