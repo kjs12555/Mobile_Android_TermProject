@@ -5,73 +5,98 @@
     android:padding="15dp"
     android:weightSum="1">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="30dp">
-
-        <TextView
-            android:text="대분류 : "
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="0.95"
-            android:textSize="20sp" />
-
-        <Spinner
-            android:layout_height="match_parent"
-            android:id="@+id/list_big_spinner"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/list_small"
-            android:layout_weight="0.19"
-            android:layout_width="200dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="30dp">
-
-        <TextView
-            android:text="소분류 : "
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="0.95"
-            android:textSize="20sp" />
-
-        <Spinner
-            android:layout_height="match_parent"
-            android:id="@+id/list_small_spinner"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/list_small"
-            android:layout_weight="0.19"
-            android:layout_width="200dp" />
-
-    </LinearLayout>
-
     <Button
-        android:text="Text"
-        android:layout_width="wrap_content"
+        android:text="텍스트"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:id="@+id/type"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:id="@+id/list_list"
-        android:layout_weight="0.28"
-        android:layout_height="330dp" />
+        android:layout_height="match_parent"
+        android:id="@+id/list_text_view">
 
-    <Button
-        android:text="Statistics"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+
+            <TextView
+                android:text="대분류 : "
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.95"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:layout_height="match_parent"
+                android:id="@+id/list_big_spinner"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/list_small"
+                android:layout_weight="0.19"
+                android:layout_width="200dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="25dp">
+
+            <TextView
+                android:text="소분류 : "
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.95"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:layout_height="match_parent"
+                android:id="@+id/list_small_spinner"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/list_small"
+                android:layout_weight="0.19"
+                android:layout_width="200dp" />
+
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/list_list"
+            android:layout_weight="0.95"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/statistics"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="invisible" />
+        android:layout_height="match_parent"
+        android:id="@+id/list_graph_view"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/chart_layout"
+            android:visibility="visible">
+
+        </RelativeLayout>
+
+        <Button
+            android:text="Statistics"
+            android:layout_width="match_parent"
+            android:id="@+id/statistics"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="50dp"
+            android:visibility="visible" />
+    </LinearLayout>
+
 </LinearLayout>
